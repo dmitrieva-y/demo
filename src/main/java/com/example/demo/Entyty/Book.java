@@ -1,25 +1,23 @@
 package com.example.demo.Entyty;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
+@Table(name = "books")
 public class Book {
-    private static Long count = 0L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private String bookName;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "author")
     private String author;
+    @Column(name = "year")
     private Integer year;
-    private String noJsonData;
-    private String nullData;
 
     public Book() {
-        ++count;
-    }
-
-    public Book(String bookName, String author, Integer year) {
-        this.id = ++count;
-        this.bookName = bookName;
-        this.author = author;
-        this.year = year;
     }
 
     public Long getId() {
@@ -30,12 +28,12 @@ public class Book {
         this.id = id;
     }
 
-    public String getBookName() {
-        return bookName;
+    public String getName() {
+        return name;
     }
 
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
+    public void setName(String bookName) {
+        this.name = bookName;
     }
 
     public String getAuthor() {
@@ -54,27 +52,7 @@ public class Book {
         this.year = year;
     }
 
-    public String getNoJsonData() {
-        return noJsonData;
-    }
-
-    public void setNoJsonData(String noJsonData) {
-        this.noJsonData = noJsonData;
-    }
-
-    public String getNullData() {
-        return nullData;
-    }
-
-    public void setNullData(String nullData) {
-        this.nullData = nullData;
-    }
-
-    public static Long getCount() {
-        return count;
-    }
-
-    @Override
+       @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -92,11 +70,9 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", bookName='" + bookName + '\'' +
+                ", name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", year=" + year +
-                ", noJsonData='" + noJsonData + '\'' +
-                ", nullData='" + nullData + '\'' +
                 '}';
     }
 }

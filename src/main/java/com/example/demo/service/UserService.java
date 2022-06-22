@@ -18,7 +18,7 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     public User getByName(String name) {
-        return userRepository.getByName(name);
+        return userRepository.findByUsername(name).get();
     }
 
     @Override
@@ -27,6 +27,6 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new RuntimeException("Not found user with name: " + username);
         }
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPass(), Collections.singleton(new SimpleGrantedAuthority(user.getRole())));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRole())));
     }
 }

@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BookController {
 
 
-    private BookService bookService;
+    private final BookService bookService;
 
     @Autowired
     public BookController(BookService bookService) {
@@ -27,11 +28,11 @@ public class BookController {
 
     @GetMapping(value = "/auth/{id}")
     public Book getBookById(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        Book book = bookService.getById(id);
-        if (book == null) {
+        Optional<Book> book = bookService.getById(id);
+        if (!book.isPresent()){
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-        return book;
+        return  book.orElseThrow(() -> new RuntimeException("Not found book with id : " + id));
     }
 
     @GetMapping(value = "/admin/delete/{id}")

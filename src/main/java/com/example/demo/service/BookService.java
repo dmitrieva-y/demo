@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
     private static final Long NOT_FOUND = -1L;
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
     public BookService(BookRepository bookRepository) {
@@ -18,27 +19,31 @@ public class BookService {
     }
 
     public List<Book> getAll() {
-        return bookRepository.getAll();
+        return bookRepository.findAll();
     }
 
     public Long create(Book book){
         if (book == null){
             return NOT_FOUND;
         }
-        return bookRepository.create(book);
+        return bookRepository.save(book).getId();
     }
 
-    public Book getById (Long id){
+    public Optional<Book> getById (Long id){
         if (id == null || id < 1) {
-            return null;
+            return Optional.empty();
         }
-        return bookRepository.getById(id);
+        return bookRepository.findById(id);
     }
 
     public Long delete(Long id){
         if (id == null || id < 1) {
             return NOT_FOUND;
         }
-        return bookRepository.delete(id);
+        if (getById(id).isPresent()) {
+            bookRepository.deleteById(id);
+            return id;
+        }
+        return NOT_FOUND;
     }
 }
