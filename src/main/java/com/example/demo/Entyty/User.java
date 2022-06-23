@@ -39,10 +39,6 @@ public class User {
         return password;
     }
 
-    public void setPassword(String pass) {
-        this.password = pass;
-    }
-
     public String getRole() {
         return role;
     }
